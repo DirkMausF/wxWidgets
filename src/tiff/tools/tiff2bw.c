@@ -1,3 +1,4 @@
+/* $Id: tiff2bw.c,v 1.18 2015-06-21 01:09:10 bfriesen Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -126,8 +127,10 @@ main(int argc, char* argv[])
 	unsigned char *inbuf, *outbuf;
 	char thing[1024];
 	int c;
+#if !HAVE_DECL_OPTARG
 	extern int optind;
 	extern char *optarg;
+#endif
 
 	while ((c = getopt(argc, argv, "c:r:R:G:B:")) != -1)
 		switch (c) {
@@ -170,6 +173,11 @@ main(int argc, char* argv[])
 		    argv[optind], samplesperpixel);
 		return (-1);
 	}
+	if( photometric == PHOTOMETRIC_RGB && samplesperpixel != 3) {
+		fprintf(stderr, "%s: Bad samples/pixel %u for PHOTOMETRIC_RGB.\n",
+		    argv[optind], samplesperpixel);
+		return (-1);
+	}
 	TIFFGetField(in, TIFFTAG_BITSPERSAMPLE, &bitspersample);
 	if (bitspersample != 8) {
 		fprintf(stderr,
@@ -204,7 +212,7 @@ main(int argc, char* argv[])
 		}
 	}
 	TIFFSetField(out, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
-	sprintf(thing, "B&W version of %s", argv[optind]);
+	snprintf(thing, sizeof(thing), "B&W version of %s", argv[optind]);
 	TIFFSetField(out, TIFFTAG_IMAGEDESCRIPTION, thing);
 	TIFFSetField(out, TIFFTAG_SOFTWARE, "tiff2bw");
 	outbuf = (unsigned char *)_TIFFmalloc(TIFFScanlineSize(out));

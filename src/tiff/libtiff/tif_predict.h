@@ -1,3 +1,4 @@
+/* $Id: tif_predict.h,v 1.8 2010-03-10 18:56:49 bfriesen Exp $ */
 
 /*
  * Copyright (c) 1995-1997 Sam Leffler
