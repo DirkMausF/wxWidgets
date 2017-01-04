@@ -449,7 +449,7 @@ wxMSWOwnerDrawnButtonBase::MSWMakeOwnerDrawnIfNecessary(const wxColour& colFg)
 {
     // The only way to change the checkbox foreground colour when using
     // themes is to owner draw it.
-    if ( wxUxThemeEngine::GetIfActive() )
+    if ( wxUxThemeIsActive() )
         MSWMakeOwnerDrawn(colFg.IsOk());
 }
 

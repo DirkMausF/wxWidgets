@@ -935,7 +935,7 @@ void wxTextEntry::ForceUpper()
 
 bool wxTextEntry::SetHint(const wxString& hint)
 {
-    if ( wxGetWinVersion() >= wxWinVersion_Vista && wxUxThemeEngine::GetIfActive() )
+    if ( wxGetWinVersion() >= wxWinVersion_Vista && wxUxThemeIsActive() )
     {
         // notice that this message always works with Unicode strings
         //
@@ -952,7 +952,7 @@ bool wxTextEntry::SetHint(const wxString& hint)
 
 wxString wxTextEntry::GetHint() const
 {
-    if ( wxUxThemeEngine::GetIfActive() )
+    if ( wxUxThemeIsActive() )
     {
         wchar_t buf[256];
         if ( ::SendMessage(GetEditHwnd(), EM_GETCUEBANNER,
